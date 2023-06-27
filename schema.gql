@@ -1,0 +1,285 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Auth {
+  userId: String!
+  name: String!
+  token: String!
+  roles: [Role!]!
+  phoneNumber: String!
+}
+
+enum Role {
+  SuperAdmin
+  Member
+}
+
+type User {
+  _id: ID!
+  id: String!
+  firstName: String!
+  lastName: String
+  fullName: String
+  otherName: String
+  email: String
+  phoneNumber: String
+  roles: [UserRoleTypes!]!
+  address: String
+}
+
+enum UserRoleTypes {
+  SuperAdmin
+  Member
+}
+
+type CategoryImage {
+  _id: String
+  uri: String
+}
+
+type ProductCategory {
+  _id: ID!
+  name: String!
+  image: CategoryImage
+}
+
+type ProductCategoryPageResult {
+  totalRecords: Float!
+  data: [ProductCategory!]!
+}
+
+type ProductImage {
+  _id: String
+  uri: String
+  name: String
+  type: String
+}
+
+type Product {
+  _id: ID!
+  name: String
+  detail: String
+  priceBefore: Float
+  price: Float
+  quantity: Float
+  category: String
+  categoryId: ID
+  createdAt: Float
+  updatedAt: Float
+  images: [ProductImage!]
+}
+
+type ProductPageResult {
+  totalRecords: Float!
+  data: [Product!]!
+}
+
+type CartItem {
+  _id: ID!
+  productId: ID!
+  quantity: Float!
+  price: Float!
+  totalAmount: Float
+  product: Product!
+}
+
+type Cart {
+  tax: Float
+  subTotal: Float
+  totalPrice: Float
+  items: [CartItem!]
+}
+
+type OrderProductImage {
+  _id: String
+  uri: String
+  name: String
+  type: String
+}
+
+type OrderProduct {
+  _id: String!
+  images: [OrderProductImage!]!
+  category: String
+  name: String!
+  detail: String!
+}
+
+type OrderItem {
+  _id: String!
+  product: OrderProduct!
+  quantity: String!
+  price: String!
+  totalAmount: String!
+}
+
+type Order {
+  _id: String
+  ref: String
+  userId: String
+  status: OrderStatus
+  items: [OrderItem!]
+  tax: Float
+  subTotal: Float
+  totalPrice: Float
+  contactPhone: String
+  address: String
+  createdAt: String
+  contactName: String
+}
+
+enum OrderStatus {
+  NEW
+  PAID
+  CONFIRMED
+  PACKED
+  SENDOUT
+  COMPLETED
+  CANCELED
+}
+
+type OrderPageResult {
+  totalRecords: Float!
+  data: [Order!]!
+}
+
+type Query {
+  user(id: String!): User!
+  currentUser: User!
+  productDetail(id: String!): Product!
+  productPage(page: ProductPageInput!): ProductPageResult!
+  findProductById(id: String!): Product!
+  findProductCategory(query: ProductCategoryQueryInput!): ProductCategory!
+  productCategoryPage(page: ProductCategoryPageInput!): ProductCategoryPageResult!
+  findUserCart: Cart
+  userOrderPage(page: OrderPageInput!): OrderPageResult!
+  orderPage(page: OrderPageInput!): OrderPageResult!
+}
+
+input ProductPageInput {
+  skip: Float!
+  take: Float!
+  keyword: String
+  status: String
+  categoryId: String
+}
+
+input ProductCategoryQueryInput {
+  name: String!
+}
+
+input ProductCategoryPageInput {
+  skip: Float!
+  take: Float!
+  keyword: String
+}
+
+input OrderPageInput {
+  skip: Float!
+  take: Float!
+  endDate: Float
+  startDate: Float
+  keyword: String
+}
+
+type Mutation {
+  updateUser(account: UpdateUserInput!): User!
+  signIn(email: String!, password: String!, client: String!): Auth!
+  phoneSignUp(user: PhoneSignUpInput!): Boolean!
+  changePassword(password: ChangePasswordInput!): String!
+  createProduct(product: CreateProductInput!): Product!
+  updateProduct(id: String!, product: UpdateProductInput!): Product!
+  deleteProduct(id: String!): Boolean!
+  createProductCategory(category: CreateProductCategoryInput!): ProductCategory!
+  updateProductCategory(id: String!, category: UpdateProductCategoryInput!): ProductCategory!
+  deleteProductCategory(id: String!): Boolean!
+  addCartItem(item: AddItemInput!): Cart!
+  updateCartItem(_id: String!, item: CartItemInput!): Cart!
+  deleteCartItem(_id: String!): Cart!
+  checkout(contact: CheckoutInput!): String!
+  verifyTransaction(reference: String!): Boolean!
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  otherName: String
+  email: String
+  username: String
+  phoneNumber: String
+}
+
+input PhoneSignUpInput {
+  firstName: String!
+  lastName: String!
+  phoneNumber: String!
+  password: String!
+  username: String!
+  email: String!
+}
+
+input ChangePasswordInput {
+  oldPassword: String!
+  newPassword: String!
+}
+
+input CreateProductInput {
+  name: String!
+  detail: String!
+  price: Float!
+  priceBefore: Float
+  quantity: Float!
+  files: [ProductImageInput!]
+  categoryId: ID
+  category: ID
+}
+
+input ProductImageInput {
+  base64Str: String!
+  filename: String!
+  filetype: String!
+}
+
+input UpdateProductInput {
+  name: String!
+  detail: String!
+  price: Float!
+  priceBefore: Float
+  quantity: Float!
+  files: [ProductImageInput!]
+  categoryId: ID
+  category: ID
+}
+
+input CreateProductCategoryInput {
+  name: String!
+  file: CategoryImageInput
+}
+
+input CategoryImageInput {
+  base64Str: String!
+  filename: String
+  filetype: String
+}
+
+input UpdateProductCategoryInput {
+  name: String!
+  file: CategoryImageInput
+}
+
+input AddItemInput {
+  quantity: Float
+  productId: String!
+}
+
+input CartItemInput {
+  quantity: Float
+}
+
+input CheckoutInput {
+  address: String!
+  email: String!
+  contactPhone: String!
+  contactName: String!
+}
